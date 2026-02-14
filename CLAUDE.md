@@ -1,13 +1,40 @@
+# TreeHacks 2026
+Eashan Iyer, Samuel Lihn, Gordon Jin, Trevor Kwan
+
+Project: 
+We are building a generalized edge AI construction system for the Treehacks 2026 hackathon at Stanford. It demonstrates two robotic agents—one physical (in the real world) and one virtual (in NVIDIA Isaac Sim)—working together on a single shared task.
+
+The premise is that you can prompt an LLM that runs locally on a DGX spark, which is used for planning and is the brains behind the operation. This can do a wide range of tasks. From there the LLM passes subtasks into the Jetson, which then uses VLA/VLM and a smaller LLM to turn this subtask into code that can run on the robotic arm.
+
+To get a sense of capabitilies, we could build something like a tower of blocks. The prompt would be turned into subtasks and then run on the robotic arm. We would simulate actions on Isaac Sim and use that to prevent hallucination. We would also use it to simulate things like lateral forces as a simplified model of earthquakes. From there we could show that the current tower would break, then the AI would redesign the tower and then it would be rebuilt using this feedback loop to reinforce the structure. 
+
+This system is built entirely on edge AI — the LLM runs locally on the DGX Spark, perception runs on the Jetson, and physics validation runs on a local GPU. No cloud. No internet required. That architectural choice unlocks the highest-stakes use case: disaster response. When an earthquake levels a building, cell towers go down and cloud APIs become unreachable, but the need for autonomous robots is at its peak. A system like this could direct robots to shore up unstable structures, clear debris from access routes, or assemble temporary shelters — all while simulating each action first to avoid making a collapse worse. The demo we show (building a block tower, earthquake-testing it in simulation, watching it fail, and having the AI redesign and rebuild a stronger version) is not a metaphor for disaster response — it is the core capability in miniature. The same plan-simulate-validate-execute loop that reinforces a block tower is what would prevent a rescue robot from pulling the wrong beam out of a rubble pile. Because the system is fully generalizable (prompt in natural language, execute with any manipulator), extending from blocks on a table to rubble in a disaster zone is a matter of scale, not a change in architecture. 
+
+Here is the criteria that is being used to judge this project:
+Creativity
+We want hackers to create a project that makes you say “wow” and tell all your friends about it. We're looking for projects that think so far outside the box that you begin to wonder why there was a box at all in the first place.
+Technical Complexity
+In only 36 hours, hackers manage to build projects with remarkably complex infrastructures built on excitingly advanced frameworks. We hope to see projects that are really running some beautiful code or hardware under the hood.
+Social Impact
+We're looking for hacks that are the blueprints for change that will impact future generations in humanity's most pressing areas of concern in the coming years.
+
+Hardware:
+Nvidia DGX Spark
+Nvidia Jetson Orin Nano Super
+Hugging face SO-101 Robot arm (1 leader, 1 follower)
+2 Mono Cameras
+Logitech C920 Webcam
+
+Compute:
+RTX 3070 Mobile Laptop (can run NVIDIA Isaac Sim)
+RTX 5090 can be accessed remotely for fine tuning models
+
+
 Deep Dive: The MirrorVerse
 Tagline: Bridging the Physical and Digital Worlds with Collaborative Multi-Agent Robotics
 
 The Core Concept
 The "MirrorVerse" is a Cross-Reality Construction System. It demonstrates two robotic agents—one physical (in the real world) and one virtual (in NVIDIA Isaac Sim)—working together on a single shared task.
-
-Imagine building a LEGO tower. The Physical Agent builds the base on your table. Once it reaches a certain height or complexity, it "hands off" the construction to the Virtual Agent, which continues building the structure in a simulation (displayed on a screen or AR headset). The two agents must communicate, synchronize their world states, and plan together.
-
-The Value of the "Virtual" Layer
-Why not just build with real blocks? The simulated "Mirror World" provides three critical superpowers:
 
 Predictive Safety (The Crystal Ball):
 Before the real robot moves a heavy or fragile object, the virtual robot runs 100 physics simulations in parallel to detect if the structure will collapse. Only the safest path is sent to the real world.
@@ -81,14 +108,6 @@ Cool Tech: As it moves, the Virtual Arm on screens mirrors it perfectly in real-
 Action - Handoff: The Physical Arm places a "capstone" block. The system detects this completes the physical phase.
 Action - Virtual: The Virtual Arm in the simulation "picks up" a virtual block (that doesn't exist in reality) and places it on top of the real tower's digital twin.
 Action - Simulation: The Virtual Agent spawns 50 more blocks to create a massive impossible archway in the simulation that responds to the physics of the real base. If you accept the design, the Physical Arm could try to match it (or just leave it as an AR extension).
-Development Bootcamp (Quick Start)
-Day 1: Get Isaac Sim running on the laptop and import the SO-101 URDF (Unified Robot Description Format). Get the Jetson communicating with the arm.
-Day 2: Implement AprilTag tracking or VLM detection on the Jetson to track block positions. Send these coordinates to Isaac Sim via TCP/WebSockets to update the "Mirror World".
-Day 3: Build the "Supervisor" LLM script to dispatch commands. Polish the visualization.
-Prior Art & Competitive Landscape
-You asked: "Has this been implemented before?"
-
-The short answer: Components of it have, but the "Co-Construction" angle is a novel twist on standard industry use cases.
 
 What Exists (The "Shoulders of Giants")
 Digital Twins (Industry Standard):
@@ -118,3 +137,4 @@ The innovations that make this specific "MirrorVerse" idea unique for a hackatho
 The "Handoff": Most digital twins just copy the real world. Your virtual agent takes over where reality ends.
 Bidirectional Feedback (The Real Innovation): The Virtual Agent proposes a "perfect" design. The Physical Agent tries to build it and reports failures (e.g., "block slipped"). The Virtual Agent updates the blueprint to compensate for real-world physics (e.g., "make the base wider"). This is true Multi-Agent Collaboration.
 Multi-Agent Protocol: Defining a communication language between a "Nvidia Isaac Sim Agent" and a "Jetson Real-World Agent" is a strong technical implementation of the "Multi-Agent Systems" criterion.
+

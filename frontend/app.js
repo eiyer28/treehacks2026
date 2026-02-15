@@ -1,7 +1,6 @@
 // ---- CONFIG ----
-// Change this to your DGX Spark's IP address
-const SPARK_IP = "10.19.178.146";
-const ROS_URL = `ws://${SPARK_IP}:9090`;
+const SPARK_IP = "100.123.79.38";
+const BRIDGE_URL = `http://${SPARK_IP}:9090`;
 
 // ---- DOM ----
 const messagesEl = document.getElementById("messages");
@@ -32,10 +31,9 @@ function log(message, level = "info") {
 }
 
 // ---- STATE ----
-let ros = null;
-let goalTopic = null;
 let planSteps = [];
 let currentSubtask = "";
+let evtSource = null;
 
 // ---- HELPERS ----
 function addMessage(text, role) {
@@ -73,108 +71,90 @@ function renderPlan() {
     });
 }
 
-// ---- ROS CONNECTION ----
+// ---- SSE CONNECTION ----
 let connectAttempt = 0;
 
-function connect() {
+function connectSSE() {
     connectAttempt++;
-    log(`Connection attempt #${connectAttempt} to ${ROS_URL}`, "info");
+    log(`SSE connection attempt #${connectAttempt} to ${BRIDGE_URL}/events`, "info");
 
-    try {
-        ros = new ROSLIB.Ros({ url: ROS_URL });
-    } catch (e) {
-        log(`Failed to create ROSLIB.Ros: ${e.message}`, "error");
-        setTimeout(connect, 3000);
-        return;
-    }
+    evtSource = new EventSource(`${BRIDGE_URL}/events`);
 
-    ros.on("connection", () => {
+    evtSource.onopen = () => {
         connectAttempt = 0;
         setStatus(true);
         addMessage("Connected to DGX Spark.", "system");
-        log(`Connected to ${ROS_URL}`, "ok");
+        log(`SSE connected to ${BRIDGE_URL}/events`, "ok");
+    };
 
-        goalTopic = new ROSLIB.Topic({
-            ros: ros,
-            name: "/mission/goal",
-            messageType: "std_msgs/String"
-        });
-
-        const planTopic = new ROSLIB.Topic({
-            ros: ros,
-            name: "/plan/full",
-            messageType: "std_msgs/String"
-        });
-        log("Subscribed to /plan/full", "info");
-        planTopic.subscribe((msg) => {
-            log(`/plan/full received: ${msg.data.substring(0, 200)}`, "info");
-            try {
-                const plan = JSON.parse(msg.data);
-                planSteps = (Array.isArray(plan) ? plan : [plan]).map((s) => {
-                    if (typeof s === "string") return { label: s, status: "pending" };
-                    return { label: s.label || s.task || JSON.stringify(s), status: s.status || "pending" };
-                });
-                renderPlan();
-                addMessage("Plan received:\n" + planSteps.map((s, i) => `  ${i + 1}. ${s.label}`).join("\n"), "assistant");
-            } catch (e) {
-                log(`/plan/full parse error: ${e.message}`, "warn");
-                addMessage(msg.data, "assistant");
-            }
-        });
-
-        const subtaskTopic = new ROSLIB.Topic({
-            ros: ros,
-            name: "/subtask/current",
-            messageType: "std_msgs/String"
-        });
-        log("Subscribed to /subtask/current", "info");
-        subtaskTopic.subscribe((msg) => {
-            log(`/subtask/current: ${msg.data}`, "info");
-            currentSubtask = msg.data;
-            subtaskLabel.textContent = currentSubtask;
-
-            let foundCurrent = false;
-            planSteps.forEach((step) => {
-                if (foundCurrent) {
-                    step.status = "pending";
-                } else if (step.label === currentSubtask || currentSubtask.includes(step.label)) {
-                    step.status = "active";
-                    foundCurrent = true;
-                } else {
-                    step.status = "done";
-                }
+    evtSource.addEventListener("plan", (e) => {
+        log(`plan received: ${e.data.substring(0, 200)}`, "info");
+        try {
+            const plan = JSON.parse(e.data);
+            planSteps = (Array.isArray(plan) ? plan : [plan]).map((s) => {
+                if (typeof s === "string") return { label: s, status: "pending" };
+                return { label: s.label || s.task || JSON.stringify(s), status: s.status || "pending" };
             });
             renderPlan();
+            addMessage("Plan received:\n" + planSteps.map((s, i) => `  ${i + 1}. ${s.label}`).join("\n"), "assistant");
+        } catch (err) {
+            log(`plan parse error: ${err.message}`, "warn");
+            addMessage(e.data, "assistant");
+        }
+    });
+
+    evtSource.addEventListener("subtask", (e) => {
+        log(`subtask: ${e.data}`, "info");
+        currentSubtask = e.data;
+        subtaskLabel.textContent = currentSubtask;
+
+        let foundCurrent = false;
+        planSteps.forEach((step) => {
+            if (foundCurrent) {
+                step.status = "pending";
+            } else if (step.label === currentSubtask || currentSubtask.includes(step.label)) {
+                step.status = "active";
+                foundCurrent = true;
+            } else {
+                step.status = "done";
+            }
         });
+        renderPlan();
     });
 
-    ros.on("error", (err) => {
-        const detail = err ? (err.message || err.type || JSON.stringify(err)) : "unknown";
-        log(`ROS error: ${detail}`, "error");
-        log(`Possible causes: rosbridge_server not running, wrong IP/port, firewall, or CORS`, "warn");
-        addMessage("Connection error.", "system");
-    });
-
-    ros.on("close", () => {
+    evtSource.onerror = () => {
         setStatus(false);
-        log(`Connection closed. Will retry in 3s (attempt #${connectAttempt})`, "warn");
-        addMessage("Disconnected. Retrying in 3s...", "system");
-        setTimeout(connect, 3000);
-    });
+        log(`SSE connection lost. Retrying in 3s (attempt #${connectAttempt})`, "warn");
+        evtSource.close();
+        setTimeout(connectSSE, 3000);
+    };
 }
 
 // ---- SEND ----
 function send() {
     const text = promptEl.value.trim();
-    if (!text || !goalTopic) return;
+    if (!text) return;
 
     addMessage(text, "user");
-    log(`Publishing to /mission/goal: "${text}"`, "ok");
-    goalTopic.publish(new ROSLIB.Message({ data: text }));
+    log(`Sending goal: "${text}"`, "ok");
 
     planSteps = [];
     renderPlan();
     subtaskLabel.textContent = "Planning...";
+
+    fetch(`${BRIDGE_URL}/goal`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ prompt: text }),
+    })
+        .then((res) => {
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            log(`Goal accepted by server`, "ok");
+        })
+        .catch((err) => {
+            log(`Failed to send goal: ${err.message}`, "error");
+            addMessage(`Error sending goal: ${err.message}`, "system");
+        });
 
     promptEl.value = "";
 }
@@ -184,8 +164,7 @@ promptEl.addEventListener("keydown", (e) => {
     if (e.key === "Enter") send();
 });
 
-document.getElementById("hostname").textContent = `${location.hostname || "file"} \u2192 ${ROS_URL}`;
+document.getElementById("hostname").textContent = `${location.hostname || "file"} \u2192 ${BRIDGE_URL}`;
 
-log(`Page loaded. Target: ${ROS_URL}`, "info");
-log(`ROSLIB version: ${ROSLIB.REVISION || "unknown"}`, "info");
-connect();
+log(`Page loaded. Target: ${BRIDGE_URL}`, "info");
+connectSSE();

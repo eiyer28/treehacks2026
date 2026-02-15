@@ -166,5 +166,26 @@ promptEl.addEventListener("keydown", (e) => {
 
 document.getElementById("hostname").textContent = `${location.hostname || "file"} \u2192 ${BRIDGE_URL}`;
 
+// ---- CAMERA FEED ----
+const camFeed = document.getElementById("cam-feed");
+const camStatus = document.getElementById("cam-status");
+
+function startCamFeed() {
+    camFeed.src = `${BRIDGE_URL}/cam0/stream`;
+    camFeed.onload = () => {
+        camStatus.style.display = "none";
+    };
+    camFeed.onerror = () => {
+        camStatus.textContent = "Camera offline";
+        camStatus.style.display = "block";
+        // Retry after 5s
+        setTimeout(() => {
+            camFeed.src = `${BRIDGE_URL}/cam0/stream?t=${Date.now()}`;
+        }, 5000);
+    };
+    log("Camera feed connecting...", "info");
+}
+
 log(`Page loaded. Target: ${BRIDGE_URL}`, "info");
 connectSSE();
+startCamFeed();

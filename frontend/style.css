@@ -71,6 +71,32 @@ header h1 span {
     letter-spacing: 0.05em;
 }
 
+#cam-view {
+    padding: 0.5rem;
+    border-bottom: 1px solid #222;
+    position: relative;
+    background: #0a0a0a;
+}
+
+#cam-feed {
+    width: 100%;
+    display: block;
+    border-radius: 4px;
+    background: #111;
+    min-height: 180px;
+    object-fit: contain;
+}
+
+#cam-status {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #555;
+    font-size: 0.8rem;
+    pointer-events: none;
+}
+
 #plan-view, #subtask-view {
     flex: 1;
     overflow-y: auto;

@@ -1,6 +1,6 @@
 // ---- CONFIG ----
 // Change this to your DGX Spark's IP address
-const SPARK_IP = "10.19.183.204";
+const SPARK_IP = "10.19.178.146";
 const ROS_URL = `ws://${SPARK_IP}:9090`;
 
 // ---- DOM ----

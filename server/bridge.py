@@ -10,7 +10,7 @@ Then the frontend at ws://<this-ip>:9090 will connect.
 
 import asyncio
 import json
-import websockets
+from websockets.asyncio.server import serve
 
 # ---- State ----
 subscribers = {}   # topic -> set of websocket connections
@@ -63,7 +63,7 @@ async def broadcast(topic, data):
     for ws in subscribers[topic]:
         try:
             await ws.send(msg)
-        except websockets.ConnectionClosed:
+        except Exception:
             dead.add(ws)
     subscribers[topic] -= dead
 
@@ -113,7 +113,7 @@ async def handler(ws):
     try:
         async for raw in ws:
             await handle_message(ws, raw)
-    except websockets.ConnectionClosed:
+    except Exception:
         pass
     finally:
         clients.discard(ws)
@@ -128,7 +128,7 @@ async def main():
     port = 9090
     print(f"Edge Rescue bridge listening on ws://{host}:{port}")
     print(f"Waiting for frontend connections...\n")
-    async with websockets.serve(handler, host, port):
+    async with serve(handler, host, port):
         await asyncio.Future()  # run forever
 
 

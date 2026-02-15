@@ -30,11 +30,11 @@ RTX 3070 Mobile Laptop (can run NVIDIA Isaac Sim)
 RTX 5090 can be accessed remotely for fine tuning models
 
 
-Deep Dive: The MirrorVerse
-Tagline: Bridging the Physical and Digital Worlds with Collaborative Multi-Agent Robotics
+Deep Dive: Edge Rescue
+Elevator Pitch: We built an AI system that runs entirely on edge hardware — it plans a construction task, simulates it to check for structural failure, and only then tells the robot to build. If the simulation says it'll collapse in an earthquake, the AI redesigns it and the robot rebuilds.
 
 The Core Concept
-The "MirrorVerse" is a Cross-Reality Construction System. It demonstrates two robotic agents—one physical (in the real world) and one virtual (in NVIDIA Isaac Sim)—working together on a single shared task.
+Edge Rescue is a sim-validated autonomous robotics system for disaster response. It demonstrates two robotic agents—one physical (in the real world) and one virtual (in NVIDIA Isaac Sim)—working together on a single shared task.
 
 Predictive Safety (The Crystal Ball):
 Before the real robot moves a heavy or fragile object, the virtual robot runs 100 physics simulations in parallel to detect if the structure will collapse. Only the safest path is sent to the real world.
@@ -49,7 +49,7 @@ This isn't just a toy; it solves expensive problems in:
 
 Space Construction (The "Mars Base"):
 Problem: 20-minute light delay makes joystick control impossible.
-Solution: Astronauts on Earth build the habitat in the "MirrorVerse" simulation. The physical robot on Mars executes the validated plan autonomously. If it gets stuck, it pauses for a "Macro-Correction" from the Leader Arm.
+Solution: Astronauts on Earth build the habitat in the "Edge Rescue" simulation. The physical robot on Mars executes the validated plan autonomously. If it gets stuck, it pauses for a "Macro-Correction" from the Leader Arm.
 Nuclear/Hazmat Decommissioning:
 Problem: Environments are too radioactive for humans and too unstructured for standard automation.
 Solution: The "Digital Twin" allows operators to test a dangerous cutting procedure in safety before committed the robot to do it for real.
@@ -126,13 +126,13 @@ Context: The "DeepMind Gap" (Gemini Robotics 1.5)
 You mentioned the Gemini Robotics 1.5 paper. That model represents the "Holy Grail": a massive Cloud VLA that "thinks" before it acts.
 
 The Constraint: We cannot run a 100B+ parameter VLA on a Jetson Orin (Edge AI).
-The Hack: The MirrorVerse approximates this "System 2 Thinking" by splitting the brain:
+The Hack: The Edge Rescue approximates this "System 2 Thinking" by splitting the brain:
 Reasoning (Cloud): We use the Gemini API (via Vercel credits) for the "Thinking" (High-level planning).
 Physics (Sem-Cloud): We use Isaac Sim (RTX Laptop) to validate the "Action".
 Reflex (Edge): We use the Jetson for the "Muscle Memory" (VLA/Policy execution).
 Result: We show that you don't need a massive single model to achieve "Thoughtful Robotics"—you just need a Multi-Agent System (one of the track criteria!).
 Your "Hackathon Novelty" (The "Cool" Factor)
-The innovations that make this specific "MirrorVerse" idea unique for a hackathon:
+The innovations that make this specific "Edge Rescue" idea unique for a hackathon:
 
 The "Handoff": Most digital twins just copy the real world. Your virtual agent takes over where reality ends.
 Bidirectional Feedback (The Real Innovation): The Virtual Agent proposes a "perfect" design. The Physical Agent tries to build it and reports failures (e.g., "block slipped"). The Virtual Agent updates the blueprint to compensate for real-world physics (e.g., "make the base wider"). This is true Multi-Agent Collaboration.

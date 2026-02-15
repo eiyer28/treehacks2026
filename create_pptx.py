@@ -87,117 +87,117 @@ def add_accent_line(slide, left, top, width, color=NVIDIA_GREEN):
     shape.line.fill.background()
 
 
+def add_device_box(slide, left, top, width, height, title, subtitle, details, border_color):
+    shape = slide.shapes.add_shape(
+        MSO_SHAPE.ROUNDED_RECTANGLE, Inches(left), Inches(top), Inches(width), Inches(height)
+    )
+    shape.fill.solid()
+    shape.fill.fore_color.rgb = RGBColor(0x1A, 0x1A, 0x2E)
+    shape.line.color.rgb = border_color
+    shape.line.width = Pt(2)
+    add_textbox(slide, left + 0.15, top + 0.1, width - 0.3, 0.4, title, font_size=16, color=border_color, bold=True, alignment=PP_ALIGN.CENTER)
+    add_textbox(slide, left + 0.15, top + 0.5, width - 0.3, 0.35, subtitle, font_size=13, color=WHITE, bold=True, alignment=PP_ALIGN.CENTER)
+    add_textbox(slide, left + 0.15, top + 0.85, width - 0.3, height - 1.0, details, font_size=11, color=LIGHT_GRAY, alignment=PP_ALIGN.CENTER)
+
+
 # ============================================================
 # SLIDE 1: Title
 # ============================================================
-slide = prs.slides.add_slide(prs.slide_layouts[6])  # blank
+slide = prs.slides.add_slide(prs.slide_layouts[6])
 set_slide_bg(slide, BG_DARK)
 add_accent_line(slide, 3, 1.8, 7.333)
-add_textbox(slide, 1, 2.0, 11.333, 1.5, "MirrorVerse", font_size=54, color=WHITE, bold=True, alignment=PP_ALIGN.CENTER)
-add_textbox(slide, 1, 3.2, 11.333, 0.8, "Sim-Validated Edge AI Robotics for Disaster Response", font_size=24, color=NVIDIA_GREEN, alignment=PP_ALIGN.CENTER)
-add_textbox(slide, 1, 5.0, 11.333, 0.5, "Eashan Iyer  |  Samuel Lihn  |  Gordon Jin  |  Trevor Kwan", font_size=18, color=LIGHT_GRAY, alignment=PP_ALIGN.CENTER)
-add_textbox(slide, 1, 5.7, 11.333, 0.5, "TreeHacks 2026", font_size=16, color=LIGHT_GRAY, alignment=PP_ALIGN.CENTER)
+add_textbox(slide, 1, 2.0, 11.333, 1.5, "Edge Rescue", font_size=54, color=WHITE, bold=True, alignment=PP_ALIGN.CENTER)
+add_textbox(slide, 1, 3.2, 11.333, 0.8, "Humans, Robots, and AI \u2014 Working Together", font_size=28, color=NVIDIA_GREEN, alignment=PP_ALIGN.CENTER)
+add_textbox(slide, 1, 4.1, 11.333, 0.7,
+    "Sim-validated autonomous robotics for disaster response.",
+    font_size=18, color=LIGHT_GRAY, alignment=PP_ALIGN.CENTER)
+add_textbox(slide, 1, 4.6, 11.333, 0.5,
+    "Plan. Simulate. Validate. Build. \u2014 No cloud, no internet, fully on edge hardware.",
+    font_size=16, color=LIGHT_GRAY, alignment=PP_ALIGN.CENTER)
+add_textbox(slide, 1, 5.5, 11.333, 0.5, "Eashan Iyer  |  Samuel Lihn  |  Gordon Jin  |  Trevor Kwan", font_size=18, color=LIGHT_GRAY, alignment=PP_ALIGN.CENTER)
+add_textbox(slide, 1, 6.1, 11.333, 0.5, "TreeHacks 2026", font_size=16, color=LIGHT_GRAY, alignment=PP_ALIGN.CENTER)
 
 # ============================================================
-# SLIDE 2: The Problem
-# ============================================================
-slide = prs.slides.add_slide(prs.slide_layouts[6])
-set_slide_bg(slide, BG_DARK)
-add_textbox(slide, 0.8, 0.4, 11.7, 0.8, "THE PROBLEM", font_size=14, color=NVIDIA_GREEN, bold=True)
-add_accent_line(slide, 0.8, 0.8, 2)
-tf = add_textbox(slide, 0.8, 1.0, 11.7, 1.2,
-    "When disasters strike, robots can't think for themselves \u2014 and humans can't reach them.",
-    font_size=32, color=WHITE, bold=True)
-
-# Left stat block
-tf = add_textbox(slide, 0.8, 2.5, 5.5, 4.5, "", font_size=18)
-add_paragraph(tf, "Turkey-Syria 2023", font_size=20, color=ACCENT_RED, bold=True)
-add_paragraph(tf, "59,000+ dead  \u2022  10,000+ buildings collapsed", font_size=16, color=WHITE, space_before=6)
-add_paragraph(tf, "53,000+ rescue workers deployed into unstable structures", font_size=14, color=LIGHT_GRAY, space_before=4)
-add_paragraph(tf, "Secondary aftershock collapses endangered active rescue teams", font_size=14, color=LIGHT_GRAY, space_before=4)
-add_paragraph(tf, "", font_size=10, space_before=16)
-add_paragraph(tf, "Myanmar March 2025", font_size=20, color=ACCENT_RED, bold=True)
-add_paragraph(tf, "3,600+ dead  \u2022  10,000+ buildings collapsed or severely damaged", font_size=16, color=WHITE, space_before=6)
-add_paragraph(tf, "6.4 aftershock hit while rescue operations were active", font_size=14, color=LIGHT_GRAY, space_before=4)
-
-# Right callout
-tf = add_textbox(slide, 7.2, 2.8, 5.3, 3.5, "", font_size=18)
-add_paragraph(tf, "In these environments:", font_size=20, color=WHITE, bold=True)
-add_paragraph(tf, "", font_size=8)
-add_paragraph(tf, "\u2718  Cell towers are down", font_size=18, color=ACCENT_RED, space_before=10)
-add_paragraph(tf, "\u2718  Cloud APIs are unreachable", font_size=18, color=ACCENT_RED, space_before=10)
-add_paragraph(tf, "\u2718  Teleoperation has fatal latency", font_size=18, color=ACCENT_RED, space_before=10)
-add_paragraph(tf, "", font_size=8)
-add_paragraph(tf, "\u2714  The need for autonomous robots is at its peak", font_size=18, color=NVIDIA_GREEN, bold=True, space_before=10)
-
-tf = add_textbox(slide, 0.8, 6.5, 11.7, 0.6,
-    "How do you make a robot that can build, reinforce, and clear \u2014 safely \u2014 with zero internet?",
-    font_size=20, color=WHITE, bold=True, alignment=PP_ALIGN.CENTER)
-
-# ============================================================
-# SLIDE 3: The Insight
+# SLIDE 2: The Story (condensed)
 # ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 set_slide_bg(slide, BG_DARK)
-add_textbox(slide, 0.8, 0.4, 11.7, 0.8, "THE INSIGHT", font_size=14, color=NVIDIA_GREEN, bold=True)
-add_accent_line(slide, 0.8, 0.8, 2)
-tf = add_textbox(slide, 0.8, 1.0, 11.7, 1.0,
-    "The most dangerous thing an autonomous robot can do is act without checking its work.",
-    font_size=30, color=WHITE, bold=True)
+add_textbox(slide, 0.8, 0.4, 11.7, 0.8, "HATAY, TURKEY  \u2014  FEBRUARY 6, 2023", font_size=14, color=ACCENT_RED, bold=True)
+add_accent_line(slide, 0.8, 0.8, 2, color=ACCENT_RED)
 
-tf = add_textbox(slide, 0.8, 2.3, 11.7, 1.0,
-    "An LLM can plan a construction task. But LLMs hallucinate \u2014 they can propose structures that are physically impossible or unstable.",
-    font_size=18, color=LIGHT_GRAY)
+# Left: the disaster facts
+tf = add_textbox(slide, 0.8, 1.2, 6.0, 5.5, "", font_size=18)
+add_paragraph(tf, "4:17 AM. A 7.8-magnitude earthquake hits.", font_size=24, color=WHITE, bold=True)
+add_paragraph(tf, "", font_size=6)
+add_paragraph(tf, "59,000 dead across Turkey and Syria.", font_size=20, color=ACCENT_RED, bold=True, space_before=8)
+add_paragraph(tf, "230,000+ buildings damaged or destroyed.", font_size=18, color=WHITE, space_before=8)
+add_paragraph(tf, "", font_size=6)
+add_paragraph(tf, "The flaw wasn't bravery. It was information.", font_size=20, color=WHITE, bold=True, space_before=16)
+add_paragraph(tf, "", font_size=6)
+add_paragraph(tf, "Rescue teams couldn't reach remote villages for 3\u20134 days.", font_size=16, color=LIGHT_GRAY, space_before=6)
+add_paragraph(tf, "Syria's White Helmets had no heavy equipment \u2014 it never came.", font_size=16, color=LIGHT_GRAY, space_before=6)
+add_paragraph(tf, "At collapsed buildings, teams faced an impossible question:", font_size=16, color=LIGHT_GRAY, space_before=6)
+add_paragraph(tf, "\"If we move this slab, will the rest collapse on us?\"", font_size=18, color=WHITE, bold=True, space_before=6)
+add_paragraph(tf, "No simulation. No structural model. Just gut instinct", font_size=16, color=LIGHT_GRAY, space_before=4)
+add_paragraph(tf, "under extreme time pressure.", font_size=16, color=LIGHT_GRAY, space_before=0)
 
-# Table of current approaches
-tbl = add_table(slide, 5, 3, 0.8, 3.5, 11.7, 3.2)
-headers = ["Current Approach", "Limitation", "Gap"]
-for i, h in enumerate(headers):
-    style_cell(tbl.cell(0, i), h, font_size=14, bold=True, color=NVIDIA_GREEN, bg_color=TABLE_HEADER_BG)
+# Right: the survival clock
+shape = slide.shapes.add_shape(
+    MSO_SHAPE.ROUNDED_RECTANGLE, Inches(7.5), Inches(1.2), Inches(5.0), Inches(4.8)
+)
+shape.fill.solid()
+shape.fill.fore_color.rgb = RGBColor(0x1A, 0x0A, 0x0A)
+shape.line.color.rgb = ACCENT_RED
+shape.line.width = Pt(2)
 
-data = [
-    ["Cloud VLAs (Gemini Robotics 1.5)", "Requires massive models + internet", "Unusable in disaster zones"],
-    ["Standard Digital Twins", "Mirror reality passively", "Don't plan ahead or validate"],
-    ["Text-to-Robot (VoxPoser, RoboGPT)", "One-shot: prompt \u2192 action", "No physics check before execution"],
-    ["Teleoperation", "Requires low-latency connection", "20-min Mars delay, zero signal in rubble"],
+add_textbox(slide, 7.7, 1.4, 4.6, 0.5, "THE SURVIVAL CLOCK", font_size=16, color=ACCENT_RED, bold=True, alignment=PP_ALIGN.CENTER)
+
+clock_data = [
+    ("< 24 hours", "90%", "survival rate"),
+    ("24\u201348 hours", "50\u201360%", "survival rate"),
+    ("48\u201372 hours", "20\u201330%", "survival rate"),
+    ("> 72 hours", "5\u201310%", "survival rate"),
 ]
-for r, row in enumerate(data):
-    bg = TABLE_ROW_BG if r % 2 == 0 else TABLE_ALT_BG
-    for c, val in enumerate(row):
-        style_cell(tbl.cell(r+1, c), val, font_size=13, color=WHITE, bg_color=bg)
+cy = 2.1
+for time, rate, label in clock_data:
+    add_textbox(slide, 7.9, cy, 2.0, 0.45, time, font_size=15, color=LIGHT_GRAY, bold=True)
+    add_textbox(slide, 9.9, cy, 1.5, 0.45, rate, font_size=22, color=WHITE, bold=True, alignment=PP_ALIGN.RIGHT)
+    add_textbox(slide, 11.5, cy + 0.05, 0.8, 0.4, label, font_size=11, color=LIGHT_GRAY)
+    cy += 0.55
 
-# Set column widths
-tbl.columns[0].width = Inches(4.0)
-tbl.columns[1].width = Inches(4.0)
-tbl.columns[2].width = Inches(3.7)
+add_textbox(slide, 7.7, 4.4, 4.6, 0.9,
+    "Every hour a robot waits for a structural assessment is an hour a survivor may not have.",
+    font_size=14, color=LIGHT_GRAY, alignment=PP_ALIGN.CENTER)
 
-tf = add_textbox(slide, 0.8, 6.8, 11.7, 0.5,
-    "What's missing: a physics sanity-check that runs locally, before the robot commits.",
-    font_size=18, color=NVIDIA_GREEN, bold=True)
+# Bottom transition
+tf = add_textbox(slide, 0.8, 6.3, 11.7, 0.9,
+    "What if the robot didn't have to guess? What if it could simulate the physics of a collapse,",
+    font_size=20, color=WHITE, bold=True, alignment=PP_ALIGN.CENTER)
+add_paragraph(tf, "test 100 approaches in seconds, and only commit to the safest one \u2014 with no internet?",
+    font_size=20, color=NVIDIA_GREEN, bold=True, alignment=PP_ALIGN.CENTER, space_before=2)
 
 # ============================================================
-# SLIDE 4: Our Solution
+# SLIDE 3: Our Solution
 # ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 set_slide_bg(slide, BG_DARK)
-add_textbox(slide, 0.8, 0.4, 11.7, 0.8, "OUR SOLUTION", font_size=14, color=NVIDIA_GREEN, bold=True)
+add_textbox(slide, 0.8, 0.4, 11.7, 0.8, "EDGE RESCUE", font_size=14, color=NVIDIA_GREEN, bold=True)
 add_accent_line(slide, 0.8, 0.8, 2)
 tf = add_textbox(slide, 0.8, 1.0, 11.7, 0.8,
-    "MirrorVerse: Plan. Simulate. Validate. Build.",
+    "Plan. Simulate. Validate. Build.",
     font_size=36, color=WHITE, bold=True)
 
 steps = [
-    ("1", "PROMPT", "\"Build a reinforced shelter\" \u2014 natural language input", ACCENT_BLUE),
-    ("2", "PLAN", "Local LLM on DGX Spark decomposes the task into subtasks", ACCENT_BLUE),
-    ("3", "SIMULATE", "Isaac Sim tests each action \u2014 will this block fall? Will this structure survive lateral forces?", NVIDIA_GREEN),
-    ("4", "VALIDATE", "Only actions that pass physics checks are sent to the real robot", NVIDIA_GREEN),
-    ("5", "BUILD", "SO-101 arm executes the validated plan", WHITE),
-    ("6", "ADAPT", "If the real world doesn't match the sim, the system re-plans", ACCENT_RED),
+    ("1", "PROMPT", "\"Build a reinforced shelter\" \u2014 natural language, spoken or typed", ACCENT_BLUE),
+    ("2", "PLAN", "Local LLM on DGX Spark decomposes into subtasks \u2014 no cloud, no internet", ACCENT_BLUE),
+    ("3", "SIMULATE", "Isaac Sim tests each action: will it fall? Will it survive lateral forces?", NVIDIA_GREEN),
+    ("4", "VALIDATE", "Only physics-validated actions are sent to the real robot", NVIDIA_GREEN),
+    ("5", "BUILD", "SO-101 arm executes the safe plan", WHITE),
+    ("6", "ADAPT", "If reality doesn't match the sim (block slips, misalignment), re-plan automatically", ACCENT_RED),
 ]
 
 y = 2.2
 for num, title, desc, color in steps:
-    # Number circle
     shape = slide.shapes.add_shape(
         MSO_SHAPE.OVAL, Inches(1.0), Inches(y), Inches(0.55), Inches(0.55)
     )
@@ -216,8 +216,75 @@ for num, title, desc, color in steps:
     y += 0.75
 
 add_textbox(slide, 0.8, 6.8, 11.7, 0.5,
-    "No cloud.  No internet.  Fully autonomous.",
+    "The AI breaks it in simulation so it doesn't break in reality.",
     font_size=22, color=NVIDIA_GREEN, bold=True, alignment=PP_ALIGN.CENTER)
+
+# ============================================================
+# SLIDE 4: You May Have Seen... (Differentiation)
+# ============================================================
+slide = prs.slides.add_slide(prs.slide_layouts[6])
+set_slide_bg(slide, BG_DARK)
+add_textbox(slide, 0.8, 0.4, 11.7, 0.8, "YOU MAY HAVE SEEN...", font_size=14, color=NVIDIA_GREEN, bold=True)
+add_accent_line(slide, 0.8, 0.8, 2)
+
+# Left column header
+add_textbox(slide, 0.8, 1.1, 5.8, 0.5, "What Exists", font_size=22, color=LIGHT_GRAY, bold=True)
+
+# DeepMind
+tf = add_textbox(slide, 0.8, 1.8, 5.8, 1.2, "", font_size=16)
+add_paragraph(tf, "Google DeepMind \u2014 Gemini Robotics 1.5", font_size=16, color=WHITE, bold=True)
+add_paragraph(tf, "100B+ parameter VLA that \"thinks before it acts.\"", font_size=14, color=LIGHT_GRAY, space_before=4)
+add_paragraph(tf, "Requires cloud, massive compute, and internet.", font_size=14, color=ACCENT_RED, space_before=2)
+add_paragraph(tf, "Unusable in a disaster zone.", font_size=14, color=ACCENT_RED, bold=True, space_before=2)
+
+# Digital Twins
+tf = add_textbox(slide, 0.8, 3.5, 5.8, 1.0, "", font_size=16)
+add_paragraph(tf, "Industry Digital Twins (Siemens, BMW, NVIDIA Omniverse)", font_size=16, color=WHITE, bold=True)
+add_paragraph(tf, "Mirror a factory floor for monitoring. Passive \u2014", font_size=14, color=LIGHT_GRAY, space_before=4)
+add_paragraph(tf, "they watch, they don't plan or validate.", font_size=14, color=ACCENT_RED, space_before=2)
+
+# Text-to-Robot
+tf = add_textbox(slide, 0.8, 4.9, 5.8, 1.0, "", font_size=16)
+add_paragraph(tf, "Text-to-Robot (VoxPoser, RoboGPT)", font_size=16, color=WHITE, bold=True)
+add_paragraph(tf, "Prompt \u2192 one-shot execution. No physics validation.", font_size=14, color=LIGHT_GRAY, space_before=4)
+add_paragraph(tf, "If the LLM hallucinates an unstable structure, the robot builds it anyway.", font_size=14, color=ACCENT_RED, space_before=2)
+
+# Divider line
+shape = slide.shapes.add_shape(
+    MSO_SHAPE.RECTANGLE, Inches(6.9), Inches(1.1), Pt(2), Inches(5.2)
+)
+shape.fill.solid()
+shape.fill.fore_color.rgb = RGBColor(0x44, 0x44, 0x44)
+shape.line.fill.background()
+
+# Right column header
+add_textbox(slide, 7.2, 1.1, 5.8, 0.5, "What We Built", font_size=22, color=NVIDIA_GREEN, bold=True)
+
+right_items = [
+    ("Runs entirely on local edge hardware", "DGX Spark + Jetson + Isaac Sim. No internet required."),
+    ("The sim doesn't just mirror \u2014 it plans ahead", "Proposes the next construction phase and stress-tests it before the robot commits."),
+    ("Every action is physics-validated", "The LLM proposes, the sim disposes. Nothing executes without passing physics checks."),
+    ("Bidirectional feedback loop", "When reality doesn't match sim (block slips), the system re-plans autonomously."),
+]
+
+ry = 1.8
+for title, desc in right_items:
+    add_textbox(slide, 7.4, ry, 5.4, 0.35, title, font_size=16, color=NVIDIA_GREEN, bold=True)
+    add_textbox(slide, 7.4, ry + 0.35, 5.4, 0.45, desc, font_size=14, color=LIGHT_GRAY)
+    ry += 1.1
+
+# Bottom punchline
+shape = slide.shapes.add_shape(
+    MSO_SHAPE.ROUNDED_RECTANGLE, Inches(1.5), Inches(6.5), Inches(10.3), Inches(0.75)
+)
+shape.fill.solid()
+shape.fill.fore_color.rgb = RGBColor(0x1A, 0x1A, 0x2E)
+shape.line.color.rgb = NVIDIA_GREEN
+shape.line.width = Pt(2)
+
+add_textbox(slide, 1.7, 6.55, 9.9, 0.65,
+    "DeepMind showed that robots should think before they act. We showed you can do it on edge hardware with no internet.",
+    font_size=17, color=WHITE, bold=True, alignment=PP_ALIGN.CENTER)
 
 # ============================================================
 # SLIDE 5: The Demo
@@ -242,8 +309,8 @@ for title, desc, color in demo_steps:
     y += 1.05
 
 tf = add_textbox(slide, 0.8, 6.6, 11.7, 0.7,
-    "The AI broke it in simulation so it wouldn't break in reality.",
-    font_size=26, color=WHITE, bold=True, alignment=PP_ALIGN.CENTER)
+    "The same loop that reinforces a block tower is what would prevent a rescue robot from pulling the wrong beam.",
+    font_size=22, color=WHITE, bold=True, alignment=PP_ALIGN.CENTER)
 
 # ============================================================
 # SLIDE 6: Architecture
@@ -255,20 +322,6 @@ add_accent_line(slide, 0.8, 0.8, 2)
 add_textbox(slide, 0.8, 1.0, 11.7, 0.7,
     "Three devices. Four agents. Zero cloud dependency.",
     font_size=30, color=WHITE, bold=True)
-
-# DGX Spark box (top center)
-def add_device_box(slide, left, top, width, height, title, subtitle, details, border_color):
-    shape = slide.shapes.add_shape(
-        MSO_SHAPE.ROUNDED_RECTANGLE, Inches(left), Inches(top), Inches(width), Inches(height)
-    )
-    shape.fill.solid()
-    shape.fill.fore_color.rgb = RGBColor(0x1A, 0x1A, 0x2E)
-    shape.line.color.rgb = border_color
-    shape.line.width = Pt(2)
-
-    tf = add_textbox(slide, left + 0.15, top + 0.1, width - 0.3, 0.4, title, font_size=16, color=border_color, bold=True, alignment=PP_ALIGN.CENTER)
-    add_textbox(slide, left + 0.15, top + 0.5, width - 0.3, 0.35, subtitle, font_size=13, color=WHITE, bold=True, alignment=PP_ALIGN.CENTER)
-    add_textbox(slide, left + 0.15, top + 0.85, width - 0.3, height - 1.0, details, font_size=11, color=LIGHT_GRAY, alignment=PP_ALIGN.CENTER)
 
 # Top: Voice/Text prompt
 add_textbox(slide, 4.5, 1.7, 4.3, 0.45, "\u25BC  Voice / Text Prompt  \u25BC", font_size=14, color=LIGHT_GRAY, alignment=PP_ALIGN.CENTER)
@@ -302,38 +355,57 @@ add_textbox(slide, 0.8, 6.6, 11.7, 0.6,
     font_size=14, color=LIGHT_GRAY, alignment=PP_ALIGN.CENTER)
 
 # ============================================================
-# SLIDE 7: Why Edge Matters
+# SLIDE 7: Why Edge + Hardware
+# (Merged old "Why Edge Matters" and "Hardware" slides)
 # ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 set_slide_bg(slide, BG_DARK)
 add_textbox(slide, 0.8, 0.4, 11.7, 0.8, "WHY EDGE MATTERS", font_size=14, color=NVIDIA_GREEN, bold=True)
 add_accent_line(slide, 0.8, 0.8, 2)
-tf = add_textbox(slide, 0.8, 1.0, 11.7, 1.0,
-    "This is not a cloud project that happens to use hardware.\nThis is a hardware-native system designed for environments where cloud doesn't exist.",
-    font_size=24, color=WHITE, bold=True)
+tf = add_textbox(slide, 0.8, 1.0, 11.7, 0.6,
+    "Hardware-native. Designed for environments where cloud doesn't exist.",
+    font_size=26, color=WHITE, bold=True)
 
-tbl = add_table(slide, 7, 3, 1.5, 2.8, 10.3, 4.0)
-headers = ["", "Cloud Robotics", "MirrorVerse"]
+# Comparison table (compact)
+tbl = add_table(slide, 6, 3, 0.8, 1.8, 6.0, 3.5)
+headers = ["", "Cloud", "Edge Rescue"]
 for i, h in enumerate(headers):
-    style_cell(tbl.cell(0, i), h, font_size=15, bold=True, color=NVIDIA_GREEN, bg_color=TABLE_HEADER_BG)
+    style_cell(tbl.cell(0, i), h, font_size=13, bold=True, color=NVIDIA_GREEN, bg_color=TABLE_HEADER_BG)
 
 rows = [
-    ["Internet required", "Yes", "No"],
-    ["Latency", "100\u2013500ms round trip", "<10ms local"],
-    ["Works in disaster zone", "No", "Yes"],
-    ["Works on Mars (20-min delay)", "No", "Yes"],
+    ["Internet", "Required", "Not needed"],
+    ["Latency", "100\u2013500ms", "<10ms"],
+    ["Disaster zone", "Unusable", "Designed for it"],
     ["Physics validation", "None", "Every action"],
-    ["Single point of failure", "Cloud outage = dead robot", "Fully self-contained"],
+    ["Single point of failure", "Cloud outage", "Self-contained"],
 ]
 for r, row in enumerate(rows):
     bg = TABLE_ROW_BG if r % 2 == 0 else TABLE_ALT_BG
-    style_cell(tbl.cell(r+1, 0), row[0], font_size=14, color=WHITE, bold=True, bg_color=bg)
-    style_cell(tbl.cell(r+1, 1), row[1], font_size=14, color=ACCENT_RED, bg_color=bg)
-    style_cell(tbl.cell(r+1, 2), row[2], font_size=14, color=NVIDIA_GREEN, bold=True, bg_color=bg)
+    style_cell(tbl.cell(r+1, 0), row[0], font_size=12, color=WHITE, bold=True, bg_color=bg)
+    style_cell(tbl.cell(r+1, 1), row[1], font_size=12, color=ACCENT_RED, bg_color=bg)
+    style_cell(tbl.cell(r+1, 2), row[2], font_size=12, color=NVIDIA_GREEN, bold=True, bg_color=bg)
 
-tbl.columns[0].width = Inches(3.8)
-tbl.columns[1].width = Inches(3.25)
-tbl.columns[2].width = Inches(3.25)
+tbl.columns[0].width = Inches(2.0)
+tbl.columns[1].width = Inches(2.0)
+tbl.columns[2].width = Inches(2.0)
+
+# Hardware list (right side)
+add_textbox(slide, 7.3, 1.8, 5.5, 0.4, "HARDWARE ON THE TABLE", font_size=14, color=NVIDIA_GREEN, bold=True)
+
+hw_items = [
+    ("NVIDIA DGX Spark", "Local LLM \u2014 planning + orchestration"),
+    ("NVIDIA Jetson Orin Nano Super", "VLM perception + motor control"),
+    ("RTX 3070 Laptop", "Isaac Sim \u2014 physics validation"),
+    ("SO-101 Follower Arm", "Executes validated plans"),
+    ("SO-101 Leader Arm", "Human override for edge cases"),
+    ("2x Mono Cameras", "Stereo perception \u2192 digital twin"),
+]
+
+hy = 2.3
+for device, role in hw_items:
+    add_textbox(slide, 7.3, hy, 5.5, 0.3, device, font_size=14, color=WHITE, bold=True)
+    add_textbox(slide, 7.3, hy + 0.3, 5.5, 0.3, role, font_size=12, color=LIGHT_GRAY)
+    hy += 0.7
 
 # ============================================================
 # SLIDE 8: The Market
@@ -346,7 +418,6 @@ add_textbox(slide, 0.8, 1.0, 11.7, 0.7,
     "At the intersection of three rapidly growing markets.",
     font_size=28, color=WHITE, bold=True)
 
-# Three columns
 col_data = [
     ("Disaster Response\nRobotics", "$2.5B \u2192 $6.2B", "by 2033 (10.5% CAGR)", "Search & rescue robots:\n$35.3B in 2025\n$70.3B by 2030", ACCENT_RED),
     ("Digital Twin\nTechnology", "$35.8B \u2192 $328.5B", "by 2034 (31.1% CAGR)", "NVIDIA Omniverse deployed\nby TSMC, BMW, Siemens\nfor factory digital twins", ACCENT_BLUE),
@@ -374,48 +445,7 @@ add_textbox(slide, 0.8, 6.9, 11.7, 0.4,
     font_size=11, color=RGBColor(0x66, 0x66, 0x66), alignment=PP_ALIGN.CENTER)
 
 # ============================================================
-# SLIDE 9: What Makes This Novel
-# ============================================================
-slide = prs.slides.add_slide(prs.slide_layouts[6])
-set_slide_bg(slide, BG_DARK)
-add_textbox(slide, 0.8, 0.4, 11.7, 0.8, "WHAT MAKES THIS NOVEL", font_size=14, color=NVIDIA_GREEN, bold=True)
-add_accent_line(slide, 0.8, 0.8, 2)
-add_textbox(slide, 0.8, 1.0, 11.7, 0.7,
-    "We didn't invent the components. We composed them in a way no one has.",
-    font_size=26, color=WHITE, bold=True)
-
-tbl = add_table(slide, 5, 3, 0.8, 2.0, 11.7, 3.0)
-headers = ["Existing Approach", "What They Do", "What We Add"]
-for i, h in enumerate(headers):
-    style_cell(tbl.cell(0, i), h, font_size=14, bold=True, color=NVIDIA_GREEN, bg_color=TABLE_HEADER_BG)
-
-data = [
-    ["Digital Twins\n(Siemens, BMW)", "Mirror reality for monitoring", "Active planning + validation\nbefore execution"],
-    ["Sim-to-Real\n(OpenAI, DeepMind)", "Train in sim, deploy to real", "Run both simultaneously as\ncoordinating agents"],
-    ["Text-to-Robot\n(VoxPoser, RoboGPT)", "One-shot: prompt \u2192 action", "Iterative: prompt \u2192 sim \u2192\nvalidate \u2192 action"],
-    ["Cloud VLAs\n(Gemini Robotics 1.5)", "Think before acting (cloud)", "Think before acting\n(fully local edge hardware)"],
-]
-for r, row in enumerate(data):
-    bg = TABLE_ROW_BG if r % 2 == 0 else TABLE_ALT_BG
-    style_cell(tbl.cell(r+1, 0), row[0], font_size=13, color=WHITE, bold=True, bg_color=bg)
-    style_cell(tbl.cell(r+1, 1), row[1], font_size=13, color=LIGHT_GRAY, bg_color=bg)
-    style_cell(tbl.cell(r+1, 2), row[2], font_size=13, color=NVIDIA_GREEN, bold=True, bg_color=bg)
-
-tbl.columns[0].width = Inches(3.5)
-tbl.columns[1].width = Inches(4.1)
-tbl.columns[2].width = Inches(4.1)
-
-tf = add_textbox(slide, 0.8, 5.3, 11.7, 0.5,
-    "The bidirectional feedback loop is the key innovation:",
-    font_size=20, color=WHITE, bold=True)
-
-tf = add_textbox(slide, 0.8, 5.8, 11.7, 1.2,
-    "Sim proposes a design  \u2192  Robot tries to build it  \u2192  Robot reports failures  \u2192  Sim adapts the design  \u2192  Repeat",
-    font_size=18, color=NVIDIA_GREEN)
-add_paragraph(tf, "This is multi-agent collaboration, not one-way mirroring.", font_size=16, color=LIGHT_GRAY, space_before=8)
-
-# ============================================================
-# SLIDE 10: Beyond Disaster Response
+# SLIDE 9: Beyond Disaster Response
 # ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 set_slide_bg(slide, BG_DARK)
@@ -426,14 +456,14 @@ add_textbox(slide, 0.8, 1.0, 11.7, 0.7,
     font_size=28, color=WHITE, bold=True)
 
 applications = [
-    ("Hazmat Decommissioning", "Test a cutting procedure in sim before committing a robot in a radioactive environment", "\u2622"),
-    ("Remote Space Construction", "Build a habitat in sim on Earth, execute on Mars where 20-min signal delay makes teleoperation impossible", "\U0001f680"),
-    ("Precision Manufacturing", "Simulate micro-assembly before a robot places a component worth thousands of dollars", "\u2699"),
-    ("Infrastructure Inspection", "Simulate load redistribution before a robot removes a damaged bridge section", "\U0001f309"),
+    ("Hazmat Decommissioning", "Test a cutting procedure in sim before committing a robot in a radioactive environment"),
+    ("Remote Space Construction", "Build a habitat in sim on Earth, execute on Mars where 20-min signal delay makes teleoperation impossible"),
+    ("Precision Manufacturing", "Simulate micro-assembly before a robot places a component worth thousands of dollars"),
+    ("Infrastructure Inspection", "Simulate load redistribution before a robot removes a damaged bridge section"),
 ]
 
 y = 2.2
-for title, desc, icon in applications:
+for title, desc in applications:
     shape = slide.shapes.add_shape(
         MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), Inches(y), Inches(11.7), Inches(1.0)
     )
@@ -451,38 +481,7 @@ tf = add_textbox(slide, 0.8, 6.5, 11.7, 0.8,
     font_size=18, color=NVIDIA_GREEN, bold=True, alignment=PP_ALIGN.CENTER)
 
 # ============================================================
-# SLIDE 11: Hardware
-# ============================================================
-slide = prs.slides.add_slide(prs.slide_layouts[6])
-set_slide_bg(slide, BG_DARK)
-add_textbox(slide, 0.8, 0.4, 11.7, 0.8, "HARDWARE ON THE TABLE", font_size=14, color=NVIDIA_GREEN, bold=True)
-add_accent_line(slide, 0.8, 0.8, 2)
-
-tbl = add_table(slide, 7, 3, 0.8, 1.3, 11.7, 5.5)
-headers = ["Device", "Role", "Why"]
-for i, h in enumerate(headers):
-    style_cell(tbl.cell(0, i), h, font_size=15, bold=True, color=NVIDIA_GREEN, bg_color=TABLE_HEADER_BG)
-
-hw = [
-    ["NVIDIA DGX Spark", "Local LLM\n(planning + orchestration)", "Runs a capable LLM\nwith zero internet"],
-    ["NVIDIA Jetson Orin Nano Super", "Perception + motor control", "Edge AI inference for VLM,\ndrives the arm in real time"],
-    ["RTX 3070 Laptop", "Isaac Sim\n(physics validation)", "Full physics simulation\nfor stress testing"],
-    ["SO-101 Follower Arm", "Physical manipulation", "Executes validated\nconstruction plans"],
-    ["SO-101 Leader Arm", "Human override", "Operator takes control for\nsafety-critical edge cases"],
-    ["2x Mono Cameras", "Stereo perception", "Tracks block positions,\nfeeds digital twin"],
-]
-for r, row in enumerate(hw):
-    bg = TABLE_ROW_BG if r % 2 == 0 else TABLE_ALT_BG
-    style_cell(tbl.cell(r+1, 0), row[0], font_size=14, color=WHITE, bold=True, bg_color=bg)
-    style_cell(tbl.cell(r+1, 1), row[1], font_size=14, color=LIGHT_GRAY, bg_color=bg)
-    style_cell(tbl.cell(r+1, 2), row[2], font_size=14, color=LIGHT_GRAY, bg_color=bg)
-
-tbl.columns[0].width = Inches(4.0)
-tbl.columns[1].width = Inches(3.85)
-tbl.columns[2].width = Inches(3.85)
-
-# ============================================================
-# SLIDE 12: Live Demo
+# SLIDE 10: Live Demo
 # ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 set_slide_bg(slide, BG_SECTION)
@@ -494,12 +493,12 @@ add_textbox(slide, 1, 3.8, 11.333, 1.0,
     font_size=24, color=NVIDIA_GREEN, alignment=PP_ALIGN.CENTER)
 
 # ============================================================
-# SLIDE 13: Closing
+# SLIDE 11: Closing
 # ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 set_slide_bg(slide, BG_DARK)
 
-add_textbox(slide, 1, 1.0, 11.333, 1.0, "MirrorVerse", font_size=48, color=WHITE, bold=True, alignment=PP_ALIGN.CENTER)
+add_textbox(slide, 1, 1.0, 11.333, 1.0, "Edge Rescue", font_size=48, color=WHITE, bold=True, alignment=PP_ALIGN.CENTER)
 add_accent_line(slide, 4, 2.1, 5.333)
 
 add_textbox(slide, 1.5, 2.5, 10.333, 2.0,
@@ -519,7 +518,7 @@ add_textbox(slide, 1, 6.5, 11.333, 0.5,
     font_size=16, color=LIGHT_GRAY, alignment=PP_ALIGN.CENTER)
 
 # ============================================================
-# SLIDE 14: Prize Track Alignment (Appendix)
+# SLIDE 12: Prize Track Alignment (Appendix)
 # ============================================================
 slide = prs.slides.add_slide(prs.slide_layouts[6])
 set_slide_bg(slide, BG_DARK)
@@ -549,6 +548,6 @@ tbl.columns[1].width = Inches(7.7)
 # ============================================================
 # SAVE
 # ============================================================
-output_path = r"C:\Users\Dell\Desktop\treehacks2026\MirrorVerse_TreeHacks2026.pptx"
+output_path = r"C:\Users\Dell\Desktop\treehacks2026\EdgeRescue_TreeHacks2026.pptx"
 prs.save(output_path)
 print(f"Saved to {output_path}")

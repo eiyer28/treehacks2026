@@ -1,0 +1,227 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background: #0f0f0f;
+    color: #fff;
+    font-family: 'Segoe UI', Calibri, sans-serif;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #222;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+header h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+}
+
+header h1 span {
+    color: #76b900;
+}
+
+#status {
+    font-size: 0.8rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    background: #2a1a1a;
+    color: #ff4c4c;
+}
+
+#status.connected {
+    background: #1a2a1a;
+    color: #76b900;
+}
+
+#main {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+#messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+#sidebar {
+    width: 340px;
+    border-left: 1px solid #222;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#sidebar h2 {
+    font-size: 0.85rem;
+    color: #76b900;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #222;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+#plan-view, #subtask-view {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    border-bottom: 1px solid #222;
+}
+
+.plan-step {
+    padding: 0.4rem 0;
+    border-bottom: 1px solid #1a1a2e;
+    color: #bbb;
+}
+
+.plan-step.active {
+    color: #76b900;
+    font-weight: 700;
+}
+
+.plan-step.done {
+    color: #555;
+    text-decoration: line-through;
+}
+
+#subtask-label {
+    color: #009eff;
+    font-weight: 600;
+}
+
+.msg {
+    max-width: 80%;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+.msg.user {
+    align-self: flex-end;
+    background: #1a3a5c;
+    border: 1px solid #009eff;
+}
+
+.msg.assistant {
+    align-self: flex-start;
+    background: #1a1a2e;
+    border: 1px solid #333;
+}
+
+.msg.system {
+    align-self: center;
+    background: none;
+    color: #666;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+#input-bar {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #222;
+    display: flex;
+    gap: 0.75rem;
+}
+
+#prompt {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 0.5rem;
+    color: #fff;
+    outline: none;
+    font-family: inherit;
+}
+
+#prompt:focus {
+    border-color: #76b900;
+}
+
+#prompt::placeholder {
+    color: #555;
+}
+
+#send {
+    padding: 0.75rem 1.5rem;
+    background: #76b900;
+    color: #0f0f0f;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+#send:hover {
+    background: #8ad400;
+}
+
+#send:disabled {
+    background: #333;
+    color: #666;
+    cursor: not-allowed;
+}
+
+/* ---- Log Panel ---- */
+#log-toggle {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+    background: #1a1a2e;
+    border: 1px solid #333;
+    border-radius: 4px;
+    color: #888;
+    cursor: pointer;
+    margin-left: 0.5rem;
+}
+
+#log-toggle:hover {
+    border-color: #76b900;
+    color: #bbb;
+}
+
+#log-panel {
+    display: none;
+    border-top: 1px solid #222;
+    background: #0a0a0a;
+    max-height: 220px;
+    overflow-y: auto;
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.75rem;
+    padding: 0.5rem 1rem;
+}
+
+#log-panel.open {
+    display: block;
+}
+
+.log-entry {
+    padding: 2px 0;
+    border-bottom: 1px solid #111;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.log-ts {
+    color: #444;
+    flex-shrink: 0;
+}
+
+.log-entry.log-info .log-msg { color: #888; }
+.log-entry.log-ok .log-msg { color: #76b900; }
+.log-entry.log-warn .log-msg { color: #ffaa00; }
+.log-entry.log-error .log-msg { color: #ff4c4c; }

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edge Rescue</title>
+    <script src="https://cdn.jsdelivr.net/npm/roslib@1/build/roslib.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1><span>Edge</span> Rescue</h1>
+        <div id="status">disconnected</div>
+        <button id="log-toggle">Logs</button>
+        <div id="hostname" style="font-size:0.75rem;color:#555;margin-left:auto;font-family:monospace;"></div>
+    </header>
+
+    <div id="main">
+        <div id="messages">
+            <div class="msg system">Connecting to DGX Spark...</div>
+        </div>
+
+        <div id="sidebar">
+            <h2>Plan</h2>
+            <div id="plan-view">
+                <div style="color:#555;">No plan yet. Send a prompt to begin.</div>
+            </div>
+            <h2>Current Subtask</h2>
+            <div id="subtask-view">
+                <span id="subtask-label">Idle</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="input-bar">
+        <input id="prompt" type="text" placeholder="e.g. Build a 3-block tower" autocomplete="off" />
+        <button id="send" disabled>Send</button>
+    </div>
+
+    <div id="log-panel"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
